@@ -4,89 +4,11 @@
   %thead
     %tr
       %th Node Name
-      %th Arch
-      %th Cores Per Socket
-      %th CPU Alloc
-      %th CPU Effective
-      %th CPU Total
-      %th CPU Load
-      %th Available Features
-      %th Active Features
-      %th Gres
-      %th Node Address
-      %th Node Host Name
-      %th Version
-      %th Operating System
-      %th Real Memory
-      %th Allocated Memory
-      %th Free Memory
-      %th Sockets
-      %th Boards
-      %th Memory Spec Limit
-      %th State
-      %th Threads Per Core
-      %th Temporary Disk
-      %th Weight
-      %th Owner
-      %th MCS Label
-      %th Partitions
-      %th Boot Time
-      %th Slurmd Start Time
-      %th Last Busy Time
-      %th Resume After Time
-      %th Configured TRES
-      %th Allocated TRES
-      %th Cap Watts
-      %th Current Watts
-      %th Average Watts
-      %th External Sensors Joules
-      %th External Sensors Watts
-      %th External Sensors Temp
-      %th Last Updated
 
   %tbody
     - @nodes.each do |node|
       %tr
-        %td= node.name
-        %td= node.arch
-        %td= node.cores_per_socket
-        %td= node.cpu_alloc
-        %td= node.cpu_effective
-        %td= node.cpu_total
-        %td= node.cpu_load
-        %td= node.available_features
-        %td= node.active_features
-        %td= node.gres
-        %td= node.node_addr
-        %td= node.node_host_name
-        %td= node.version
-        %td= node.operating_system
-        %td= node.real_memory
-        %td= node.allocated_memory
-        %td= node.free_memory
-        %td= node.sockets
-        %td= node.boards
-        %td= node.memory_spec_limit
-        %td= node.state
-        %td= node.threads_per_core
-        %td= node.temporary_disk
-        %td= node.weight
-        %td= node.owner
-        %td= node.mcs_label
-        %td= node.partitions
-        %td= node.boot_time
-        %td= node.slurmd_start_time
-        %td= node.last_busy_time
-        %td= node.resume_after_time
-        %td= node.configured_tres
-        %td= node.allocated_tres
-        %td= node.cap_watts
-        %td= node.current_watts
-        %td= node.average_watts
-        %td= node.external_sensors_joules
-        %td= node.external_sensors_watts
-        %td= node.external_sensors_temp
-        %td= node.last_updated
+        %td= node.NodeName
 
 
 

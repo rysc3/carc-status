@@ -1,51 +1,12 @@
 class NodesController < ApplicationController
-  before_action :set_node, only: [:show, :edit, :update, :destroy]
+  before_action :update_nodes, only: [:index, :show]
 
   def index
-    host = '129.24.245.8'
-    username = 'ryan'
-    private_key = 'app/assets/keys/server_key.pem'
-
-    begin
-      Net::SSH.start(host, username, keys: [private_key]) do |ssh|
-        # Get hostname
-        result_hostname = ssh.exec!("hostname")
-        hostname = result_hostname&.strip  # Use &. to safely call strip on result if it's not nil
-
-        # Get system time
-        result_time = ssh.exec!("date")
-        system_time = result_time&.strip
-
-        # Get nodes info
-        result_nodes = ssh.exec!("scontrol show node -a")
-        nodes_info = result_nodes.split("\n\n")
-
-        nodes_info.each do |node_info|
-          node_data = parse_node_info(node_info)
-          node = Node.find_or_initialize_by(name: node_data[:nodename])
-          node.update(node_data)
-          node.last_updated = Time.now
-          node.save
-        end
-
-        @hostname = hostname
-        @system_time = system_time
-        @nodes = Node.all
-      end
-    rescue Net::SSH::AuthenticationFailed
-      flash[:error] = "Authentication failed. Please check your credentials."
-      @hostname = nil
-      @system_time = nil
-      @nodes = []
-    rescue StandardError => e
-      flash[:error] = "Failed to fetch data: #{e.message}"
-      @hostname = nil
-      @system_time = nil
-      @nodes = []
-    end
+    @nodes = Node.all
   end
 
   def show
+    @node = Node.find(params[:id])
   end
 
   def test_connection
@@ -57,28 +18,88 @@ class NodesController < ApplicationController
       Net::SSH.start(host, username, keys: [private_key]) do |ssh|
         # Execute the hostname command
         result_hostname = ssh.exec!("hostname")
-        @hostname = result_hostname&.strip  # Use &. to safely call strip on result if it's not nil
+        @hostname = result_hostname&.strip
         result_date = ssh.exec!("date")
         @date = result_date&.strip
       end
     rescue Net::SSH::AuthenticationFailed
       flash[:error] = "Authentication failed. Please check your credentials."
       @hostname = nil
+      @date = nil
     rescue StandardError => e
       flash[:error] = "Failed to fetch hostname: #{e.message}"
       @hostname = nil
+      @date = nil
     end
   end
 
-  private
 
-  def parse_node_info(node_info)
-    node_data = {}
-    node_info.each_line do |line|
-      key, value = line.strip.split('=', 2)
-      node_data[key.downcase.to_sym] = value
+  def update_nodes
+    host = '129.24.245.8'
+    username = 'ryan'
+    private_key = 'app/assets/keys/server_key.pem'
+
+    begin
+      Net::SSH.start(host, username, keys: [private_key]) do |ssh|
+        # Get nodes info
+        result_nodes = ssh.exec!("scontrol show node -a")
+        nodes_info = result_nodes.split("\n\n")
+
+        result_hostname = ssh.exec!("hostname")
+        hostname = result_hostname&.strip
+
+        nodes_info.each do |node_info|
+          node_data = parse_node_info(node_info, hostname)
+          node = Node.find_by(NodeName: node_data[:NodeName])
+
+          if node
+            # Update existing node
+            node.update(node_data)
+          else
+            # Create new node
+            Node.create(node_data)
+          end
+        end
+      end
+    rescue Net::SSH::AuthenticationFailed
+      flash[:error] = "Authentication failed. Please check your credentials."
+    rescue StandardError => e
+      flash[:error] = "Failed to fetch data: #{e.message}"
     end
-    node_data[:last_updated] = Time.now
+  end
+
+
+  def parse_node_info(node_info, hostname)
+    node_data = {}
+    node_name = ""
+
+    node_info.each_line do |line|
+      line.chomp!  # Remove newline character
+      key, value = line.split('=', 2)
+
+      if key == "NodeName"
+        node_name = value.split.first  # Extract NodeName up to the first space
+      end
+    end
+
+    # Check if NodeName is present
+    if node_name.present?
+      node = Node.find_by(NodeName: node_name)
+
+      # If node exists, update its attributes
+      if node
+        node.update(NodeName: node_name)
+      else
+        # Otherwise, create a new node
+        Node.create(NodeName: node_name)
+      end
+    end
+
+    # Print out the parsed node data
+    puts "-------------------"
+    puts "Parsed Node Data: #{node_data.inspect}"
+    puts "-------------------"
+
     node_data
   end
 
