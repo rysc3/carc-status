@@ -1,1 +1,11 @@
-%h1 Hello World!
+%h1 Node Information
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Hostname
+      %th System Time
+  %tbody
+    %tr
+      %td= @hostname || 'N/A'
+      %td= @system_time || 'N/A'
