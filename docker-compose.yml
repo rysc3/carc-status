@@ -9,6 +9,7 @@ services:
       - .:/app
     depends_on:
       - db
+      - redis
     command: ["rails", "server", "-b", "0.0.0.0"]
   db:
     image: postgres:13
@@ -18,3 +19,7 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: myapp_development
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
