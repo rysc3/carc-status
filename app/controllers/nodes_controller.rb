@@ -59,8 +59,13 @@ class NodesController < ApplicationController
   end
 
   def get_node_name(node_info)
-    first_line = node_info.lines.first
+    # Split the node_info into lines
+    lines = node_info.split("\n")
+
+    # Get the first line and extract NodeName
+    first_line = lines.first
     node_name = first_line.match(/NodeName=([^\s]+)/)[1] if first_line.include?("NodeName=")
+
     node_name
   end
 
@@ -72,33 +77,19 @@ class NodesController < ApplicationController
     node_info.each_line do |line|
       line.chomp!
 
-      if line.include?("CoresPerSocket=")
-        node_data[:CoresPerSocket] = line.match(/CoresPerSocket=(\d+)/)[1].to_i
-      elsif line.include?("CPUAlloc=")
-        node_data[:CPUAlloc] = line.match(/CPUAlloc=(\d+)/)[1].to_i
-      elsif line.include?("CPULoad=")
-        node_data[:CPULoad] = line.match(/CPULoad=([\d.]+)/)[1].to_f
-      elsif line.include?("RealMemory=")
-        node_data[:RealMemory] = line.match(/RealMemory=(\d+)/)[1].to_i
-      elsif line.include?("AllocMem=")
-        node_data[:AllocMem] = line.match(/AllocMem=(\d+)/)[1].to_i
-      elsif line.include?("FreeMem=")
-        node_data[:FreeMem] = line.match(/FreeMem=(\d+)/)[1].to_i
-      elsif line.include?("Sockets=")
-        node_data[:Sockets] = line.match(/Sockets=(\d+)/)[1].to_i
-      elsif line.include?("Boards=")
-        node_data[:Boards] = line.match(/Boards=(\d+)/)[1].to_i
-      elsif line.include?("State=")
-        node_data[:State] = line.match(/State=([^\s]+)/)[1]
-      elsif line.include?("ThreadsPerCore=")
-        node_data[:ThreadsPerCore] = line.match(/ThreadsPerCore=(\d+)/)[1].to_i
-      elsif line.include?("Partitions=")
-        node_data[:Partitions] = line.match(/Partitions=([^\s]+)/)[1]
-      elsif line.include?("CurrentWatts=")
-        node_data[:CurrentWatts] = line.match(/CurrentWatts=(\d+)/)[1].to_i
-      elsif line.include?("AveWatts=")
-        node_data[:AveWatts] = line.match(/AveWatts=(\d+)/)[1].to_i
-      end
+      node_data[:CoresPerSocket] = line.match(/CoresPerSocket=(\d+)/)[1].to_i if line.include?("CoresPerSocket=")
+      node_data[:CPUAlloc] = line.match(/CPUAlloc=(\d+)/)[1].to_i if line.include?("CPUAlloc=")
+      node_data[:CPULoad] = line.match(/CPULoad=([\d.]+)/)[1].to_f if line.include?("CPULoad=")
+      node_data[:RealMemory] = line.match(/RealMemory=(\d+)/)[1].to_i if line.include?("RealMemory=")
+      node_data[:AllocMem] = line.match(/AllocMem=(\d+)/)[1].to_i if line.include?("AllocMem=")
+      node_data[:FreeMem] = line.match(/FreeMem=(\d+)/)[1].to_i if line.include?("FreeMem=")
+      node_data[:Sockets] = line.match(/Sockets=(\d+)/)[1].to_i if line.include?("Sockets=")
+      node_data[:Boards] = line.match(/Boards=(\d+)/)[1].to_i if line.include?("Boards=")
+      node_data[:State] = line.match(/State=([^\s]+)/)[1] if line.include?("State=")
+      node_data[:ThreadsPerCore] = line.match(/ThreadsPerCore=(\d+)/)[1].to_i if line.include?("ThreadsPerCore=")
+      node_data[:Partitions] = line.match(/Partitions=([^\s]+)/)[1] if line.include?("Partitions=")
+      node_data[:CurrentWatts] = line.match(/CurrentWatts=(\d+)/)[1].to_i if line.include?("CurrentWatts=")
+      node_data[:AveWatts] = line.match(/AveWatts=(\d+)/)[1].to_i if line.include?("AveWatts=")
     end
 
     node.update(node_data)
