@@ -1,2 +1,3 @@
 class Node < ApplicationRecord
+
 end

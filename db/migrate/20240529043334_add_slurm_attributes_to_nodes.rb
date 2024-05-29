@@ -1,0 +1,42 @@
+class AddSlurmAttributesToNodes < ActiveRecord::Migration[6.1]
+  def change
+    add_column :nodes, :arch, :string
+    add_column :nodes, :cores_per_socket, :integer
+    add_column :nodes, :cpu_alloc, :integer
+    add_column :nodes, :cpu_efctv, :integer
+    add_column :nodes, :cpu_tot, :integer
+    add_column :nodes, :cpu_load, :float
+    add_column :nodes, :available_features, :text
+    add_column :nodes, :active_features, :text
+    add_column :nodes, :gres, :text
+    add_column :nodes, :node_addr, :string
+    add_column :nodes, :node_hostname, :string
+    add_column :nodes, :version, :string
+    add_column :nodes, :os, :string
+    add_column :nodes, :real_memory, :integer
+    add_column :nodes, :alloc_mem, :integer
+    add_column :nodes, :free_mem, :integer
+    add_column :nodes, :sockets, :integer
+    add_column :nodes, :boards, :integer
+    add_column :nodes, :mem_spec_limit, :integer
+    add_column :nodes, :state, :string
+    add_column :nodes, :threads_per_core, :integer
+    add_column :nodes, :tmp_disk, :integer
+    add_column :nodes, :weight, :integer
+    add_column :nodes, :owner, :string
+    add_column :nodes, :mcs_label, :string
+    add_column :nodes, :partitions, :text
+    add_column :nodes, :boot_time, :datetime
+    add_column :nodes, :slurmd_start_time, :datetime
+    add_column :nodes, :last_busy_time, :datetime
+    add_column :nodes, :resume_after_time, :datetime
+    add_column :nodes, :cfg_tres, :text
+    add_column :nodes, :alloc_tres, :text
+    add_column :nodes, :cap_watts, :string
+    add_column :nodes, :current_watts, :integer
+    add_column :nodes, :ave_watts, :integer
+    add_column :nodes, :ext_sensors_joules, :string
+    add_column :nodes, :ext_sensors_watts, :integer
+    add_column :nodes, :ext_sensors_temp, :string
+  end
+end
