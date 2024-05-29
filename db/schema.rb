@@ -10,22 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_29_165301) do
+ActiveRecord::Schema.define(version: 2024_05_29_185526) do
 
   create_table "nodes", force: :cascade do |t|
     t.string "NodeName"
     t.integer "CoresPerSocket"
     t.integer "CPUAlloc"
-    t.integer "CPUEfctv"
-    t.integer "CPUTot"
     t.float "CPULoad"
-    t.text "AvailableFeatures"
-    t.text "ActiveFeatures"
-    t.text "Gres"
-    t.string "NodeAddr"
-    t.string "NodeHostName"
-    t.string "Version"
-    t.string "OS"
     t.integer "RealMemory"
     t.integer "AllocMem"
     t.integer "FreeMem"
@@ -33,26 +24,11 @@ ActiveRecord::Schema.define(version: 2024_05_29_165301) do
     t.integer "Boards"
     t.string "State"
     t.integer "ThreadsPerCore"
-    t.integer "TmpDisk"
-    t.integer "Weight"
-    t.string "Owner"
-    t.string "MCS_label"
     t.text "Partitions"
-    t.datetime "BootTime"
-    t.datetime "SlurmdStartTime"
-    t.datetime "LastBusyTime"
-    t.datetime "ResumeAfterTime"
-    t.text "CfgTRES"
-    t.text "AllocTRES"
-    t.string "CapWatts"
     t.integer "CurrentWatts"
     t.integer "AveWatts"
-    t.string "ExtSensorsJoules"
-    t.integer "ExtSensorsWatts"
-    t.string "ExtSensorsTemp"
-    t.text "Reason"
-    t.datetime "last_updated"
-    t.string "Arch"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

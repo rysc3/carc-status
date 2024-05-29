@@ -1,16 +1,48 @@
-%h1 Node Information
+!!!
+%html
+  %head
+    %title Node Information
+    = stylesheet_link_tag 'skeleton'
+    = csrf_meta_tags
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th Node Name
+  %body
+    %h1 Node Information
 
-  %tbody
-    - @nodes.each do |node|
-      %tr
-        %td= node.NodeName
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Node Name
+          %th Cores Per Socket
+          %th CPU Alloc
+          %th CPU Load
+          %th Real Memory
+          %th Alloc Mem
+          %th Free Mem
+          %th Sockets
+          %th Boards
+          %th State
+          %th Threads Per Core
+          %th Partitions
+          %th Current Watts
+          %th Average Watts
 
+      %tbody
+        - @nodes.each do |node|
+          %tr
+            %td= node.NodeName
+            %td= node.CoresPerSocket
+            %td= node.CPUAlloc
+            %td= node.CPULoad
+            %td= node.RealMemory
+            %td= node.AllocMem
+            %td= node.FreeMem
+            %td= node.Sockets
+            %td= node.Boards
+            %td= node.State
+            %td= node.ThreadsPerCore
+            %td= node.Partitions
+            %td= node.CurrentWatts
+            %td= node.AveWatts
 
-
-%h2
-  = link_to 'Test', test_path
+    %h2
+      = link_to 'Test', test_path
