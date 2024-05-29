@@ -48,6 +48,28 @@ class NodesController < ApplicationController
   def show
   end
 
+  def test_connection
+    host = '129.24.245.8'
+    username = 'ryan'
+    private_key = 'app/assets/keys/server_key.pem'
+
+    begin
+      Net::SSH.start(host, username, keys: [private_key]) do |ssh|
+        # Execute the hostname command
+        result_hostname = ssh.exec!("hostname")
+        @hostname = result_hostname&.strip  # Use &. to safely call strip on result if it's not nil
+        result_date = ssh.exec!("date")
+        @date = result_date&.strip
+      end
+    rescue Net::SSH::AuthenticationFailed
+      flash[:error] = "Authentication failed. Please check your credentials."
+      @hostname = nil
+    rescue StandardError => e
+      flash[:error] = "Failed to fetch hostname: #{e.message}"
+      @hostname = nil
+    end
+  end
+
   private
 
   def parse_node_info(node_info)
