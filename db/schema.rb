@@ -24,11 +24,12 @@ ActiveRecord::Schema.define(version: 2024_05_29_185526) do
     t.integer "Boards"
     t.string "State"
     t.integer "ThreadsPerCore"
-    t.text "Partitions"
+    t.string "Partitions"
     t.integer "CurrentWatts"
     t.integer "AveWatts"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["NodeName"], name: "index_nodes_on_NodeName", unique: true
   end
 
 end

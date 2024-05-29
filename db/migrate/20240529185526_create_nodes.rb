@@ -12,11 +12,12 @@ class CreateNodes < ActiveRecord::Migration[6.1]
       t.integer :Boards
       t.string :State
       t.integer :ThreadsPerCore
-      t.text :Partitions
+      t.string :Partitions
       t.integer :CurrentWatts
       t.integer :AveWatts
 
       t.timestamps
     end
+    add_index :nodes, :NodeName, unique: true
   end
 end
